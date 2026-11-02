@@ -17,8 +17,14 @@ A weekly reference for a student recruiting in CRE. I read the Market Summary ev
 ## Data Centers
 ## Other (Senior Housing, Life Sciences, and anything else notable)
 
-## Market Summary (500 to 700 words)
-Connected paragraphs covering: the biggest stories of the week, capital markets (rates, lending, spreads, cap rates, transaction volume, CMBS), and which asset classes are strengthening or weakening and why. Weave in interpretation, but start every interpretive sentence with "My read:". Put a link right after every sentence with a specific figure. A sentence that draws on more than one source gets a link for each source. Never let one "My read" sentence cover two asset classes. This section must work as a standalone briefing.
+## Market Summary (800 to 1,100 words)
+Write it as a flowing article, not a list of statistics. Structure:
+- Five to six topics, each starting with a ### headline that states the takeaway (for example, "Rates and the Fed: relief from Treasuries, none from the Fed"), not just a label like "Rates."
+- Under each headline, one italic overview sentence that tells me what I am about to read.
+- Then one or two flowing paragraphs in plain language. Explain what happened and why it matters, and tie facts together with connecting sentences instead of stacking numbers. No more than three figures per sentence.
+- Then one "My read:" paragraph with the interpretation. Do not put interpretation anywhere else.
+- Then a "Sources:" line listing the outlets with links for that topic.
+Required topics: the week in brief, rates and the Fed, credit and CMBS, capital and pricing, and which asset classes are strengthening or weakening. Every figure must still appear in a linked source and match it exactly. This section must work as a standalone briefing.
 
 ## Capital Markets
 Rates, lending spreads, cap rates, CMBS delinquency and issuance, transaction volume, and available capital. Use a table for the indicators, with what each figure measures. End with a short "My read:" paragraph on what the measures mean together.
@@ -39,5 +45,5 @@ Rates, lending spreads, cap rates, CMBS delinquency and issuance, transaction vo
 ## Verify before sending
 Re-open the source for each of these and confirm it appears in the article. Remove anything you cannot confirm and say so:
 - Every figure in the Capital Markets table
-- Every Market Summary figure
+- Every Market Summary figure, matched exactly to its source
 - Any claim about a filing or official document, checked against the filing itself
