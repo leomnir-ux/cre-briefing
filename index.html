@@ -8,11 +8,16 @@
 </head>
 <body>
   <header class="top">
-    <h1 id="title">U.S. CRE Weekly Briefing</h1>
-    <label class="week-picker">
-      Week
-      <select id="week"></select>
-    </label>
+    <div class="masthead">
+      <h1 id="title">U.S. CRE Weekly Briefing</h1>
+      <div class="dateline">
+        <span id="week-range"></span>
+        <label class="week-picker" id="week-picker">
+          <span class="label-text">Other weeks</span>
+          <select id="week"></select>
+        </label>
+      </div>
+    </div>
     <nav id="sections" class="buttons" aria-label="Sections"></nav>
   </header>
 

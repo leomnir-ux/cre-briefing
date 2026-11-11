@@ -4,7 +4,8 @@
 const briefings = window.BRIEFINGS || [];
 const sectionNames = window.SECTION_NAMES || [];
 
-const titleEl = document.getElementById("title");
+const weekRangeEl = document.getElementById("week-range");
+const weekPickerEl = document.getElementById("week-picker");
 const weekEl = document.getElementById("week");
 const buttonsEl = document.getElementById("sections");
 const contentEl = document.getElementById("content");
@@ -115,7 +116,7 @@ function weekLabel(b) {
 
 function render() {
   const b = briefings[currentWeek];
-  titleEl.textContent = b.title;
+  weekRangeEl.textContent = weekLabel(b);
   document.title = b.title;
 
   for (const btn of buttonsEl.children) {
@@ -152,6 +153,9 @@ function init() {
     });
     buttonsEl.appendChild(btn);
   });
+
+  // The week picker only matters once there is more than one week to pick from.
+  weekPickerEl.hidden = briefings.length < 2;
 
   weekEl.addEventListener("change", () => {
     currentWeek = Number(weekEl.value);
