@@ -5,8 +5,9 @@ const briefings = window.BRIEFINGS || [];
 const sectionNames = window.SECTION_NAMES || [];
 
 const weekRangeEl = document.getElementById("week-range");
-const weekPickerEl = document.getElementById("week-picker");
 const weekEl = document.getElementById("week");
+const prevEl = document.getElementById("week-prev");
+const nextEl = document.getElementById("week-next");
 const buttonsEl = document.getElementById("sections");
 const contentEl = document.getElementById("content");
 
@@ -114,13 +115,68 @@ function weekLabel(b) {
   return parts.length > 1 ? parts.slice(1).join(", ") : b.date;
 }
 
+// "October 21 to October 27, 2026" -> "Oct 21 to Oct 27". The year is added
+// only when the briefings span more than one year.
+function shortWeekLabel(b) {
+  const m = weekLabel(b).match(/^([A-Za-z]+) (\d+) to ([A-Za-z]+) (\d+), (\d{4})$/);
+  if (!m) return weekLabel(b);
+  const label = `${m[1].slice(0, 3)} ${m[2]} to ${m[3].slice(0, 3)} ${m[4]}`;
+  const years = new Set(briefings.map((x) => x.date.slice(0, 4)));
+  return years.size > 1 ? `${label}, ${m[5]}` : label;
+}
+
+// "Data Centers" -> "data-centers", used in the URL hash.
+function slugify(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+// The first section this week's briefing actually has.
+function firstSection(b) {
+  return sectionNames.find((n) => b.sections[n]) || sectionNames[0];
+}
+
+// Change week and/or section by updating the URL hash. The hashchange
+// listener below then redraws the page, so links, refresh and the back
+// button all behave the same way.
+function goTo(weekIndex, section) {
+  const b = briefings[weekIndex];
+  const name = b.sections[section] ? section : firstSection(b);
+  const hash = `#${b.date}/${slugify(name)}`;
+  if (location.hash === hash) render();
+  else location.hash = hash;
+}
+
+// Read the URL hash (#2026-10-27/office). Anything missing or unknown falls
+// back to the newest week and its first section.
+function applyHash() {
+  const [date, slug] = location.hash.replace(/^#/, "").split("/");
+  const weekIndex = briefings.findIndex((b) => b.date === date);
+  currentWeek = weekIndex >= 0 ? weekIndex : 0;
+  const b = briefings[currentWeek];
+  const wanted = sectionNames.find((n) => slugify(n) === slug);
+  currentSection = wanted && b.sections[wanted] ? wanted : firstSection(b);
+
+  // Tidy a bare or invalid address into the full form without adding a history entry.
+  const canonical = `#${b.date}/${slugify(currentSection)}`;
+  if (location.hash !== canonical) history.replaceState(null, "", canonical);
+  render();
+}
+
 function render() {
   const b = briefings[currentWeek];
   weekRangeEl.textContent = weekLabel(b);
   document.title = b.title;
 
+  weekEl.value = String(currentWeek);
+  // The list is newest first, so "previous" is the next index along.
+  prevEl.disabled = currentWeek >= briefings.length - 1;
+  nextEl.disabled = currentWeek <= 0;
+
   for (const btn of buttonsEl.children) {
-    btn.classList.toggle("active", btn.dataset.section === currentSection);
+    const active = btn.dataset.section === currentSection;
+    btn.classList.toggle("active", active);
+    // On a phone the bar scrolls sideways, so keep the current tab in view.
+    if (active) btn.scrollIntoView({ block: "nearest", inline: "center" });
   }
 
   const body = b.sections[currentSection];
@@ -138,7 +194,7 @@ function init() {
   briefings.forEach((b, i) => {
     const opt = document.createElement("option");
     opt.value = i;
-    opt.textContent = weekLabel(b);
+    opt.textContent = shortWeekLabel(b);
     weekEl.appendChild(opt);
   });
 
@@ -147,22 +203,16 @@ function init() {
     btn.type = "button";
     btn.textContent = name;
     btn.dataset.section = name;
-    btn.addEventListener("click", () => {
-      currentSection = name;
-      render();
-    });
+    btn.addEventListener("click", () => goTo(currentWeek, name));
     buttonsEl.appendChild(btn);
   });
 
-  // The week picker only matters once there is more than one week to pick from.
-  weekPickerEl.hidden = briefings.length < 2;
+  weekEl.addEventListener("change", () => goTo(Number(weekEl.value), currentSection));
+  prevEl.addEventListener("click", () => goTo(currentWeek + 1, currentSection));
+  nextEl.addEventListener("click", () => goTo(currentWeek - 1, currentSection));
+  window.addEventListener("hashchange", applyHash);
 
-  weekEl.addEventListener("change", () => {
-    currentWeek = Number(weekEl.value);
-    render();
-  });
-
-  render();
+  applyHash();
 }
 
 init();

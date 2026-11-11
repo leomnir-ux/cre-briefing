@@ -56,24 +56,48 @@ h1 {
   color: var(--muted);
 }
 
-.week-picker {
-  display: inline-block;
-  margin-left: 14px;
-  text-transform: none;
-  letter-spacing: 0;
+/* Week row: previous arrow, week selector, next arrow */
+.week-nav {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
 }
 
-.week-picker[hidden] { display: none; }
-
-.week-picker select {
-  margin-left: 6px;
-  padding: 2px 6px;
+.week-nav button,
+.week-nav select {
   font-family: var(--sans);
-  font-size: 0.85rem;
   color: var(--text);
   background: transparent;
   border: 1px solid var(--line);
   border-radius: 2px;
+}
+
+.week-nav button {
+  width: 40px;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.week-nav button:hover:not(:disabled) { border-color: var(--text); }
+
+.week-nav button:disabled {
+  color: var(--line);
+  cursor: default;
+}
+
+.week-nav select {
+  flex: 0 1 260px;
+  min-width: 0;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align-last: center;
 }
 
 /* Section bar: black rule below the date, black rule underneath, thin dividers between labels */
