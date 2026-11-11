@@ -76,35 +76,57 @@ h1 {
   border-radius: 2px;
 }
 
+/* Section bar: black rule below the date, black rule underneath, thin dividers between labels */
 .buttons {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--line);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin-left: -1px;
+  clip-path: inset(0 0 0 1px); /* hides the divider that starts each row */
+  border-bottom: 1px solid var(--rule);
+  scrollbar-width: none;
 }
 
+.buttons::-webkit-scrollbar { display: none; }
+
 .buttons button {
-  padding: 8px 14px;
-  font-size: 0.95rem;
-  font-family: inherit;
-  color: var(--text);
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 999px;
+  flex: 1 0 auto;
+  padding: 11px 12px;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-left: 1px solid var(--line);
+  border-radius: 0;
   cursor: pointer;
 }
 
-.buttons button:hover { border-color: var(--accent); }
+.buttons button:hover { color: var(--text); }
 
 .buttons button.active {
-  color: var(--accent-text);
-  background: var(--accent);
-  border-color: var(--accent);
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+/* Wide screens: break into rows. Phones keep one row that scrolls sideways. */
+@media (min-width: 640px) {
+  .buttons { flex-wrap: wrap; overflow-x: visible; }
 }
 
 main { padding-top: 20px; padding-bottom: 64px; }
+
+main h3:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
 
 main h3 {
   font-size: 1.2rem;
